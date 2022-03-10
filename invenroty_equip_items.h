@@ -34,7 +34,7 @@ private:
        {
            for(auto &it2 : it->mass)
            {
-               if(it2.action == "==")
+               if(it2.action == "\"==\"")
                {
                    if(it2.field_name == "\"level\"")
                    {
@@ -118,7 +118,7 @@ private:
        {
            for(auto &it2 : it->mass)
            {
-               if(it2.action == "==")
+               if(it2.action == "\"==\"")
                {
                    if(it2.field_name == "\"level\"")
                    {
