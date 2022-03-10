@@ -98,6 +98,13 @@ std::vector<std::shared_ptr<inventory_equip_item>> get_inventory(const std::stri
                 }
                 break;
             }
+            default:
+            {
+                std::cout << "WRONG FORMAT EQUIPMENT IN FILE" << std::endl;
+                in.close();
+                exit(0);
+                break;
+            }
             }
         }
     }
@@ -163,6 +170,13 @@ std::vector<std::shared_ptr<modificator>> get_modificators(const std::string &pa
                     filters_vect.push_back(filter(split[0],split[2],split[1]));
                     break;
                 }
+                default:
+                {
+                    std::cout << "WRONG FORMAT FILTER IN FILE" << std::endl;
+                    in.close();
+                    exit(0);
+                    break;
+                }
                 }
 
                 filters.erase(start,end+1);
@@ -191,7 +205,15 @@ std::vector<std::shared_ptr<modificator>> get_modificators(const std::string &pa
                     std::cout << e.what() << std::endl;
                     in.close();
                 }
+                break;
 
+            }
+            default:
+            {
+                std::cout << "WRONG FORMAT MODIFICATOR IN FILE" << std::endl;
+                in.close();
+                exit(0);
+                break;
             }
             }
         }
