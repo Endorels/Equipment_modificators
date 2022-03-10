@@ -177,12 +177,20 @@ std::vector<std::shared_ptr<modificator>> get_modificators(const std::string &pa
             {
             case 4:
             {
-                std::string ident = explode(vect[0],":",false)[1];
-                std::string type = explode(vect[2], ":", false)[1];
-                double value = std::stod(explode(vect[3], ":", false)[1]);
+                try
+                {
+                    std::string ident = explode(vect[0],":",false)[1];
+                    std::string type = explode(vect[2], ":", false)[1];
+                    double value = std::stod(explode(vect[3], ":", false)[1]);
 
-                auto mod = std::make_shared<modificator>(ident, type, value, filters_vect);
-                modificators.push_back(mod);
+                    auto mod = std::make_shared<modificator>(ident, type, value, filters_vect);
+                    modificators.push_back(mod);
+                }
+                catch (std::exception &e)
+                {
+                    std::cout << e.what() << std::endl;
+                    in.close();
+                }
 
             }
             }
@@ -196,10 +204,10 @@ std::vector<std::shared_ptr<modificator>> get_modificators(const std::string &pa
 int main()
 {
     // -- get modificators from file
-    auto mods_ = get_modificators("C:\\C++\\Inventory\\resourses\\modificators.txt");
+    std::vector<std::shared_ptr<modificator>> mods_(get_modificators("C:\\C++\\Inventory\\resourses\\modificators.txt"));
 
     // --- put in inventory
-    auto inventory = get_inventory("C:\\C++\\Inventory\\resourses\\inventory.txt", mods_);
+    std::vector<std::shared_ptr<inventory_equip_item>> inventory(get_inventory("C:\\C++\\Inventory\\resourses\\inventory.txt", mods_));
 
     // --- equip / unequip
     for(auto &it : inventory)
