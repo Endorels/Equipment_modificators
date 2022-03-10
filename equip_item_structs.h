@@ -26,10 +26,10 @@ public:
         ident(_ident), type(_type), level(_level), rarity(_rarity), damage(_damage), speed(_speed){}
     ~weapon_struct(){}
 
-    std::string * get_ident() { return &ident;}
-    std::string * get_type() { return &type;}
-    std::string * get_rarity() { return &rarity;}
-    int * get_level() { return &level;}
+    const std::string * get_ident() { return &ident;}
+    const std::string * get_type() { return &type;}
+    const std::string * get_rarity() { return &rarity;}
+    const int * get_level() { return &level;}
 };
 
 class armor_struct : public equip_item_struct
@@ -47,10 +47,10 @@ public:
         ident(_ident), type(_type), level(_level), rarity(_rarity), protection(_protection){}
     ~armor_struct(){}
 
-    std::string * get_ident() { return &ident;}
-    std::string * get_type() { return &type;}
-    std::string * get_rarity() { return &rarity;}
-    int * get_level() { return &level;}
+    const std::string * get_ident() { return &ident;}
+    const std::string * get_type() { return &type;}
+    const std::string * get_rarity() { return &rarity;}
+    const int * get_level() { return &level;}
 };
 
 

@@ -52,9 +52,9 @@ private:
                            modificators.push_back(it);
                    }
                }
-               else if(it2.action == ">=")
+               else if(it2.action == "\">=\"")
                {
-                   if(it2.field_name >= "level")
+                   if(it2.field_name >= "\"level\"")
                    {
                        if(*item->get_level() == std::stoi(it2.value))
                            modificators.push_back(it);
@@ -136,9 +136,9 @@ private:
                            modificators.push_back(it);
                    }
                }
-               else if(it2.action == ">=")
+               else if(it2.action == "\">=\"")
                {
-                   if(it2.field_name >= "level")
+                   if(it2.field_name >= "\"level\"")
                    {
                        if(*item->get_level() == std::stoi(it2.value))
                            modificators.push_back(it);
