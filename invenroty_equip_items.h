@@ -111,7 +111,7 @@ void Inventory_equip_item::get_modificator(std::vector<std::shared_ptr<Modificat
 {
     for(auto &it : mods)
     {
-        for(auto &it2 : it->mass)
+        for(auto &it2 : *it->get_mass())
         {
             // -------------------------------------------------------------------- //
             if(*it2.get_action() == "\"==\"")           // action -  [ == ]
@@ -217,7 +217,7 @@ void Inventory_equip_item::show_modificators()
 {
     for(auto &it : modificators)
     {
-        std::cout << "[ Modificator : " << it->ident << " | Type : " << it->type <<  " | Value : " << it->value << " ]" << std::endl;
+        std::cout << "[ Modificator : " << *it->get_ident() << " | Type : " << *it->get_type() <<  " | Value : " << *it->get_value() << " ]" << std::endl;
     }
 }
 
