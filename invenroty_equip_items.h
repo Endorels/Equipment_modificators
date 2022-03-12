@@ -8,130 +8,217 @@
 #include "modificators.h"
 #include "equip_item_structs.h"
 
-class inventory_equip_item
+// ----------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
+
+
+// ----------------------------------------------------------------------------------------------------------
+// ------------    Abstract Equip item class
+// ----------------------------------------------------------------------------------------------------------
+
+class Inventory_equip_item
 {
     equip_item_struct * item;
-    std::vector<std::shared_ptr<modificator>> modificators;
+    std::vector<std::shared_ptr<Modificator>> modificators;
 
 public:
-    inventory_equip_item(equip_item_struct * _item) : item(_item) {}
-    virtual ~inventory_equip_item(){}
+    Inventory_equip_item(equip_item_struct * _item, std::vector<std::shared_ptr<Modificator>> &mods) : item(_item) { get_modificator(mods);}
+    virtual ~Inventory_equip_item(){}
 
+    virtual void get_modificator(std::vector<std::shared_ptr<Modificator>> &mods);
+    virtual void show_modificators();
     virtual void equip() = 0;
     virtual void unequip() = 0;
-    virtual void get_modificator(std::vector<std::shared_ptr<modificator>> &mods)
-    {
-        for(auto &it : mods)
-        {
-            for(auto &it2 : it->mass)
-            {
-                if(it2.action == "\"==\"")
-                {
-                    if(it2.field_name == "\"level\"")
-                    {
-                        if(*item->get_level() == std::stoi(it2.value))
-                            modificators.push_back(it);
-                    }
-                    else if(it2.field_name == "\"type\"")
-                    {
-                        if(*item->get_type() == it2.value)
-                            modificators.push_back(it);
-                    }
-                    else if(it2.field_name == "\"rarity\"")
-                    {
-                        if(*item->get_rarity() == it2.value)
-                            modificators.push_back(it);
-                    }
-                }
-                else if(it2.action == "\">=\"")
-                {
-                    if(it2.field_name >= "\"level\"")
-                    {
-                        if(*item->get_level() == std::stoi(it2.value))
-                            modificators.push_back(it);
-                    }
-                    else if(it2.field_name >= "\"type\"")
-                    {
-                        if(*item->get_type() == it2.value)
-                            modificators.push_back(it);
-                    }
-                    else if(it2.field_name >= "\"rarity\"")
-                    {
-                        if(*item->get_rarity() == it2.value)
-                            modificators.push_back(it);
-                    }
-                }
-            }
-        }
-    }
-    virtual void show_modificators()
-    {
-        for(auto &it : modificators)
-        {
-            std::cout << "[ Modificator : " << it->ident << " | Type : " << it->type <<  " | Value : " << it->value << " ]" << std::endl;
-        }
-    }
 };
 
+// ----------------------------------------------------------------------------------------------------------
+// ------------    Weapon class
+// ----------------------------------------------------------------------------------------------------------
 
-class weapon : public inventory_equip_item
+class Weapon : public Inventory_equip_item
 {
 private:
    std::shared_ptr<weapon_struct> item;
 
 public:
-    weapon() = delete;
-    weapon(std::shared_ptr<weapon_struct>weapon_str, std::vector<std::shared_ptr<modificator>> &mods) : inventory_equip_item(weapon_str.get()), item(weapon_str)
-    {
-        get_modificator(mods);
-    }
-    ~weapon(){}
+    Weapon() = delete;
+    Weapon(std::shared_ptr<weapon_struct>weapon_str, std::vector<std::shared_ptr<Modificator>> &mods);
+    ~Weapon();
 
-    void equip()
-    {
-        std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
-        std::cout << " - Weapon " << *item->get_ident() << " equipped." << std::endl;
-        show_modificators();
-        std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
-    }
-
-    void unequip()
-    {
-        std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
-        std::cout << " - Weapon " << *item->get_ident() << " unequipped." << std::endl;
-        std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
-    }
+    void equip();
+    void unequip();
 
 };
 
-class armor : public inventory_equip_item
+Weapon::Weapon(std::shared_ptr<weapon_struct>weapon_str, std::vector<std::shared_ptr<Modificator>> &mods) : Inventory_equip_item(weapon_str.get(), mods), item(weapon_str){}
+Weapon::~Weapon(){}
+void Weapon::equip()
+{
+    std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
+    std::cout << " - Weapon " << *item->get_ident() << " equipped." << std::endl;
+    show_modificators();
+    std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
+}
+
+void Weapon::unequip()
+{
+    std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
+    std::cout << " - Weapon " << *item->get_ident() << " unequipped." << std::endl;
+    std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
+}
+
+// ----------------------------------------------------------------------------------------------------------
+// ------------    Armor class
+// ----------------------------------------------------------------------------------------------------------
+
+class Armor : public Inventory_equip_item
 {
 private:
    std::shared_ptr<armor_struct> item;
 
 public:
-    armor() = delete;
-    armor(std::shared_ptr<armor_struct>armor_str, std::vector<std::shared_ptr<modificator>> mods) : inventory_equip_item(armor_str.get()), item(armor_str)
-    {
-        get_modificator(mods);
-    }
-    ~armor(){}
+    Armor() = delete;
+    Armor(std::shared_ptr<armor_struct>armor_str, std::vector<std::shared_ptr<Modificator>> mods);
+    ~Armor();
 
-    void equip()
-    {
-        std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
-        std::cout << " - Armor " << *item->get_ident() << " equipped." << std::endl;
-        show_modificators();
-        std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
-    }
-
-    void unequip()
-    {
-        std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
-        std::cout << " - Armor " << *item->get_ident() << " unequipped." << std::endl;
-        std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
-    }
+    void equip();
+    void unequip();
 
 };
+
+Armor::~Armor(){}
+Armor::Armor(std::shared_ptr<armor_struct>armor_str, std::vector<std::shared_ptr<Modificator>> mods) : Inventory_equip_item(armor_str.get(), mods), item(armor_str){}
+
+void Armor::equip()
+{
+    std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
+    std::cout << " - Armor " << *item->get_ident() << " equipped." << std::endl;
+    show_modificators();
+    std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
+}
+
+void Armor::unequip()
+{
+    std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
+    std::cout << " - Armor " << *item->get_ident() << " unequipped." << std::endl;
+    std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
+}
+
+// ----------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
+
+void Inventory_equip_item::get_modificator(std::vector<std::shared_ptr<Modificator>> &mods)
+{
+    for(auto &it : mods)
+    {
+        for(auto &it2 : it->mass)
+        {
+            // -------------------------------------------------------------------- //
+            if(*it2.get_action() == "\"==\"")           // action -  [ == ]
+            {
+                if(*it2.get_field_name() == "\"level\"")
+                {
+                    if(*item->get_level() == std::stoi(*it2.get_value()))
+                        modificators.push_back(it);
+                }
+                else if(*it2.get_field_name() == "\"type\"")
+                {
+                    if(*item->get_type() == *it2.get_value())
+                        modificators.push_back(it);
+                }
+                else if(*it2.get_field_name() == "\"rarity\"")
+                {
+                    if(*item->get_rarity() == *it2.get_value())
+                        modificators.push_back(it);
+                }
+            }
+            // -------------------------------------------------------------------- //
+            else if(*it2.get_action() == "\"<\"")       // action -  [ < ]
+            {
+                if(*it2.get_field_name() < "\"level\"")
+                {
+                    if(*item->get_level() == std::stoi(*it2.get_value()))
+                        modificators.push_back(it);
+                }
+                else if(*it2.get_field_name() < "\"type\"")
+                {
+                    if(*item->get_type() == *it2.get_value())
+                        modificators.push_back(it);
+                }
+                else if(*it2.get_field_name() < "\"rarity\"")
+                {
+                    if(*item->get_rarity() == *it2.get_value())
+                        modificators.push_back(it);
+                }
+            }
+            // -------------------------------------------------------------------- //
+            else if(*it2.get_action() == "\">\"")       // action -  [ > ]
+            {
+                if(*it2.get_field_name() > "\"level\"")
+                {
+                    if(*item->get_level() == std::stoi(*it2.get_value()))
+                        modificators.push_back(it);
+                }
+                else if(*it2.get_field_name() > "\"type\"")
+                {
+                    if(*item->get_type() == *it2.get_value())
+                        modificators.push_back(it);
+                }
+                else if(*it2.get_field_name() > "\"rarity\"")
+                {
+                    if(*item->get_rarity() == *it2.get_value())
+                        modificators.push_back(it);
+                }
+            }
+            // -------------------------------------------------------------------- //
+            else if(*it2.get_action() == "\">=\"")      // action -  [ >= ]
+            {
+                if(*it2.get_field_name() >= "\"level\"")
+                {
+                    if(*item->get_level() == std::stoi(*it2.get_value()))
+                        modificators.push_back(it);
+                }
+                else if(*it2.get_field_name() >= "\"type\"")
+                {
+                    if(*item->get_type() == *it2.get_value())
+                        modificators.push_back(it);
+                }
+                else if(*it2.get_field_name() >= "\"rarity\"")
+                {
+                    if(*item->get_rarity() == *it2.get_value())
+                        modificators.push_back(it);
+                }
+            }
+            // -------------------------------------------------------------------- //
+            else if(*it2.get_action() == "\"<=\"")      // action -  [ <= ]
+            {
+                if(*it2.get_field_name() <= "\"level\"")
+                {
+                    if(*item->get_level() == std::stoi(*it2.get_value()))
+                        modificators.push_back(it);
+                }
+                else if(*it2.get_field_name() <= "\"type\"")
+                {
+                    if(*item->get_type() == *it2.get_value())
+                        modificators.push_back(it);
+                }
+                else if(*it2.get_field_name() <= "\"rarity\"")
+                {
+                    if(*item->get_rarity() == *it2.get_value())
+                        modificators.push_back(it);
+                }
+            }
+            // -------------------------------------------------------------------- //
+        }
+    }
+}
+
+void Inventory_equip_item::show_modificators()
+{
+    for(auto &it : modificators)
+    {
+        std::cout << "[ Modificator : " << it->ident << " | Type : " << it->type <<  " | Value : " << it->value << " ]" << std::endl;
+    }
+}
 
 #endif // INVENROTY_EQUIP_ITEMS_H

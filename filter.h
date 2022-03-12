@@ -2,16 +2,24 @@
 #define FILTER_H
 #include <string>
 
-class filter
+// ----------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
+
+class Filter
 {
-public:
+private:
     std::string field_name;
     std::string value;
     std::string action;
 
-    filter(const std::string &_field_name, const std::string &_value, const std::string &_action = "\"==\"")
+public:
+    Filter(const std::string &_field_name, const std::string &_value, const std::string &_action = "\"==\"")
      : field_name(_field_name), value(_value),action(_action){}
-    ~filter(){}
+    ~Filter(){}
+
+    const std::string * get_field_name(){ return &field_name;}
+    const std::string * get_value() { return &value;}
+    const std::string * get_action() { return &action;}
 };
 
 

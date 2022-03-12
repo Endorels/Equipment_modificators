@@ -5,19 +5,19 @@
 #include <string>
 #include "filter.h"
 
-class modificator
+class Modificator
 {
 
 public:
     std::string ident;
     std::string type;
     double value;
-    std::vector<filter> mass;
+    std::vector<Filter> mass;
 
-    modificator() = delete;
-    modificator(const std::string &_ident, const std::string &_type, const double &_value,const std::vector<filter> &_mass)
+    Modificator() = delete;
+    Modificator(const std::string &_ident, const std::string &_type, const double &_value,const std::vector<Filter> &_mass)
         : ident(_ident), type(_type), value(_value), mass(_mass){}
-    ~modificator(){}
+    ~Modificator(){}
 };
 
 #endif // MODIFICATORS_H

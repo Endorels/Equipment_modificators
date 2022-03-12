@@ -6,8 +6,37 @@
 #include <string>
 #include "invenroty_equip_items.h"
 
-inline  std::vector<std::string> explode(std::string source, std::string separator, bool empty = true)
-  {
+// funcion for split string
+inline std::vector<std::string> explode(std::string source, std::string separator, bool empty = true);
+
+// function to read and parse inventory items from file
+std::vector<std::shared_ptr<Inventory_equip_item>> get_inventory(const std::string &path_to_file, std::vector<std::shared_ptr<Modificator>> &mods_mass);
+
+//  function to read and parse item modificators from file
+std::vector<std::shared_ptr<Modificator>> get_modificators(const std::string &path_to_file);
+
+// ----------------------------------------- //
+
+int main()
+{
+    // -- get modificators from file
+    std::vector<std::shared_ptr<Modificator>> mods_(get_modificators("C:\\C++\\Inventory\\resourses\\modificators.txt"));
+
+    // --- put in inventory
+    std::vector<std::shared_ptr<Inventory_equip_item>> inventory(get_inventory("C:\\C++\\Inventory\\resourses\\inventory.txt", mods_));
+
+    // --- equip / unequip
+    for(auto &it : inventory)
+    {
+        it->equip();
+        it->unequip();
+    }
+
+    return 0;
+}
+
+inline std::vector<std::string> explode(std::string source, std::string separator, bool empty)
+{
     std::vector<std::string> out;
 
     std::string::size_type pos = 0;
@@ -17,30 +46,30 @@ inline  std::vector<std::string> explode(std::string source, std::string separat
 
     while(find_pos != source.npos)
     {
-      if(pos != find_pos)
-      {
-        out.push_back(source.substr(pos, find_pos - pos));
-      }
-      else
-      {
-        if(empty == true)
+        if(pos != find_pos)
         {
-            out.push_back("");
+            out.push_back(source.substr(pos, find_pos - pos));
         }
-      }
-      pos = find_pos + separator.length();
-      find_pos = source.find(separator, pos);
+        else
+        {
+            if(empty == true)
+            {
+                out.push_back("");
+            }
+        }
+        pos = find_pos + separator.length();
+        find_pos = source.find(separator, pos);
     }
 
     std::string tmp = source.substr(pos);
     out.push_back(source.substr(pos));
 
     return out;
-  };
+};
 
-std::vector<std::shared_ptr<inventory_equip_item>> get_inventory(const std::string &path, std::vector<std::shared_ptr<modificator>> &mods_mass)
+std::vector<std::shared_ptr<Inventory_equip_item>> get_inventory(const std::string &path, std::vector<std::shared_ptr<Modificator>> &mods_mass)
 {
-    std::vector<std::shared_ptr<inventory_equip_item>> inventory;
+    std::vector<std::shared_ptr<Inventory_equip_item>> inventory;
 
     std::string line;
     std::ifstream in(path.c_str());
@@ -67,7 +96,7 @@ std::vector<std::shared_ptr<inventory_equip_item>> get_inventory(const std::stri
                     std::string rarity = explode(expl[3],":",false)[1];
                     double protection = std::stod(explode(expl[4],":",false)[1]);
 
-                    auto item = std::make_shared<armor>(std::make_shared<armor_struct>(ident, type, level, rarity, protection), mods_mass);
+                    auto item = std::make_shared<Armor>(std::make_shared<armor_struct>(ident, type, level, rarity, protection), mods_mass);
                     inventory.push_back(item);
                 }
                 catch (std::exception &e)
@@ -88,7 +117,7 @@ std::vector<std::shared_ptr<inventory_equip_item>> get_inventory(const std::stri
                     double damage = std::stod(explode(expl[4],":",false)[1]);
                     double speed = std::stod(explode(expl[5],":",false)[1]);
 
-                    auto item = std::make_shared<weapon>(std::make_shared<weapon_struct>(ident, type, level, rarity, damage, speed), mods_mass);
+                    auto item = std::make_shared<Weapon>(std::make_shared<weapon_struct>(ident, type, level, rarity, damage, speed), mods_mass);
                     inventory.push_back(item);
                 }
                 catch (std::exception &e)
@@ -113,9 +142,10 @@ std::vector<std::shared_ptr<inventory_equip_item>> get_inventory(const std::stri
     return  inventory;
 }
 
-std::vector<std::shared_ptr<modificator>> get_modificators(const std::string &path)
+
+std::vector<std::shared_ptr<Modificator>> get_modificators(const std::string &path)
 {
-    std::vector<std::shared_ptr<modificator>> modificators;
+    std::vector<std::shared_ptr<Modificator>> modificators;
 
     std::string line;
     std::ifstream in(path.c_str());
@@ -140,7 +170,7 @@ std::vector<std::shared_ptr<modificator>> get_modificators(const std::string &pa
                 filters += *it;
 
             // -- write filters in vector
-            std::vector<filter> filters_vect;
+            std::vector<Filter> filters_vect;
 
             bool search = true;
             while (search)
@@ -162,12 +192,12 @@ std::vector<std::shared_ptr<modificator>> get_modificators(const std::string &pa
                 {
                 case 2:
                 {
-                    filters_vect.push_back(filter(split[0],split[1]));
+                    filters_vect.push_back(Filter(split[0],split[1]));
                     break;
                 }
                 case 3:
                 {
-                    filters_vect.push_back(filter(split[0],split[2],split[1]));
+                    filters_vect.push_back(Filter(split[0],split[2],split[1]));
                     break;
                 }
                 default:
@@ -197,7 +227,7 @@ std::vector<std::shared_ptr<modificator>> get_modificators(const std::string &pa
                     std::string type = explode(vect[2], ":", false)[1];
                     double value = std::stod(explode(vect[3], ":", false)[1]);
 
-                    auto mod = std::make_shared<modificator>(ident, type, value, filters_vect);
+                    auto mod = std::make_shared<Modificator>(ident, type, value, filters_vect);
                     modificators.push_back(mod);
                 }
                 catch (std::exception &e)
@@ -220,23 +250,5 @@ std::vector<std::shared_ptr<modificator>> get_modificators(const std::string &pa
     }
     in.close();
 
-     return modificators;
-}
-
-int main()
-{
-    // -- get modificators from file
-    std::vector<std::shared_ptr<modificator>> mods_(get_modificators("C:\\C++\\Inventory\\resourses\\modificators.txt"));
-
-    // --- put in inventory
-    std::vector<std::shared_ptr<inventory_equip_item>> inventory(get_inventory("C:\\C++\\Inventory\\resourses\\inventory.txt", mods_));
-
-    // --- equip / unequip
-    for(auto &it : inventory)
-    {
-        it->equip();
-        it->unequip();
-    }
-
-    return 0;
+    return modificators;
 }
