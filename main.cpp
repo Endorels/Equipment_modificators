@@ -170,7 +170,7 @@ std::vector<std::shared_ptr<Modificator>> get_modificators(const std::string &pa
                 filters += *it;
 
             // -- write filters in vector
-            std::vector<Filter> filters_vect;
+            std::vector<std::shared_ptr<Filter>> filters_vect;
 
             bool search = true;
             while (search)
@@ -192,12 +192,12 @@ std::vector<std::shared_ptr<Modificator>> get_modificators(const std::string &pa
                 {
                 case 2:
                 {
-                    filters_vect.push_back(Filter(split[0],split[1]));
+                    filters_vect.push_back(std::make_shared<Filter>(split[0],split[1]));
                     break;
                 }
                 case 3:
                 {
-                    filters_vect.push_back(Filter(split[0],split[2],split[1]));
+                    filters_vect.push_back(std::make_shared<Filter>(split[0],split[2],split[1]));
                     break;
                 }
                 default:

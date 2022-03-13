@@ -114,97 +114,97 @@ void Inventory_equip_item::get_modificator(std::vector<std::shared_ptr<Modificat
         for(auto &it2 : *it->get_mass())
         {
             // -------------------------------------------------------------------- //
-            if(*it2.get_action() == "\"==\"")           // action -  [ == ]
+            if(*it2->get_action() == "\"==\"")           // action -  [ == ]
             {
-                if(*it2.get_field_name() == "\"level\"")
+                if(*it2->get_field_name() == "\"level\"")
                 {
-                    if(*item->get_level() == std::stoi(*it2.get_value()))
+                    if(*item->get_level() == std::stoi(*it2->get_value()))
                         modificators.push_back(it);
                 }
-                else if(*it2.get_field_name() == "\"type\"")
+                else if(*it2->get_field_name() == "\"type\"")
                 {
-                    if(*item->get_type() == *it2.get_value())
+                    if(*item->get_type() == *it2->get_value())
                         modificators.push_back(it);
                 }
-                else if(*it2.get_field_name() == "\"rarity\"")
+                else if(*it2->get_field_name() == "\"rarity\"")
                 {
-                    if(*item->get_rarity() == *it2.get_value())
+                    if(*item->get_rarity() == *it2->get_value())
                         modificators.push_back(it);
                 }
             }
             // -------------------------------------------------------------------- //
-            else if(*it2.get_action() == "\"<\"")       // action -  [ < ]
+            else if(*it2->get_action() == "\"<\"")       // action -  [ < ]
             {
-                if(*it2.get_field_name() < "\"level\"")
+                if(*it2->get_field_name() < "\"level\"")
                 {
-                    if(*item->get_level() == std::stoi(*it2.get_value()))
+                    if(*item->get_level() == std::stoi(*it2->get_value()))
                         modificators.push_back(it);
                 }
-                else if(*it2.get_field_name() < "\"type\"")
+                else if(*it2->get_field_name() < "\"type\"")
                 {
-                    if(*item->get_type() == *it2.get_value())
+                    if(*item->get_type() == *it2->get_value())
                         modificators.push_back(it);
                 }
-                else if(*it2.get_field_name() < "\"rarity\"")
+                else if(*it2->get_field_name() < "\"rarity\"")
                 {
-                    if(*item->get_rarity() == *it2.get_value())
+                    if(*item->get_rarity() == *it2->get_value())
                         modificators.push_back(it);
                 }
             }
             // -------------------------------------------------------------------- //
-            else if(*it2.get_action() == "\">\"")       // action -  [ > ]
+            else if(*it2->get_action() == "\">\"")       // action -  [ > ]
             {
-                if(*it2.get_field_name() > "\"level\"")
+                if(*it2->get_field_name() > "\"level\"")
                 {
-                    if(*item->get_level() == std::stoi(*it2.get_value()))
+                    if(*item->get_level() == std::stoi(*it2->get_value()))
                         modificators.push_back(it);
                 }
-                else if(*it2.get_field_name() > "\"type\"")
+                else if(*it2->get_field_name() > "\"type\"")
                 {
-                    if(*item->get_type() == *it2.get_value())
+                    if(*item->get_type() == *it2->get_value())
                         modificators.push_back(it);
                 }
-                else if(*it2.get_field_name() > "\"rarity\"")
+                else if(*it2->get_field_name() > "\"rarity\"")
                 {
-                    if(*item->get_rarity() == *it2.get_value())
+                    if(*item->get_rarity() == *it2->get_value())
                         modificators.push_back(it);
                 }
             }
             // -------------------------------------------------------------------- //
-            else if(*it2.get_action() == "\">=\"")      // action -  [ >= ]
+            else if(*it2->get_action() == "\">=\"")      // action -  [ >= ]
             {
-                if(*it2.get_field_name() >= "\"level\"")
+                if(*it2->get_field_name() >= "\"level\"")
                 {
-                    if(*item->get_level() == std::stoi(*it2.get_value()))
+                    if(*item->get_level() == std::stoi(*it2->get_value()))
                         modificators.push_back(it);
                 }
-                else if(*it2.get_field_name() >= "\"type\"")
+                else if(*it2->get_field_name() >= "\"type\"")
                 {
-                    if(*item->get_type() == *it2.get_value())
+                    if(*item->get_type() == *it2->get_value())
                         modificators.push_back(it);
                 }
-                else if(*it2.get_field_name() >= "\"rarity\"")
+                else if(*it2->get_field_name() >= "\"rarity\"")
                 {
-                    if(*item->get_rarity() == *it2.get_value())
+                    if(*item->get_rarity() == *it2->get_value())
                         modificators.push_back(it);
                 }
             }
             // -------------------------------------------------------------------- //
-            else if(*it2.get_action() == "\"<=\"")      // action -  [ <= ]
+            else if(*it2->get_action() == "\"<=\"")      // action -  [ <= ]
             {
-                if(*it2.get_field_name() <= "\"level\"")
+                if(*it2->get_field_name() <= "\"level\"")
                 {
-                    if(*item->get_level() == std::stoi(*it2.get_value()))
+                    if(*item->get_level() == std::stoi(*it2->get_value()))
                         modificators.push_back(it);
                 }
-                else if(*it2.get_field_name() <= "\"type\"")
+                else if(*it2->get_field_name() <= "\"type\"")
                 {
-                    if(*item->get_type() == *it2.get_value())
+                    if(*item->get_type() == *it2->get_value())
                         modificators.push_back(it);
                 }
-                else if(*it2.get_field_name() <= "\"rarity\"")
+                else if(*it2->get_field_name() <= "\"rarity\"")
                 {
-                    if(*item->get_rarity() == *it2.get_value())
+                    if(*item->get_rarity() == *it2->get_value())
                         modificators.push_back(it);
                 }
             }

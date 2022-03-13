@@ -2,6 +2,7 @@
 #define EQUIP_ITEM_STRUCTS_H
 
 #include <string>
+#include <iostream>
 
 class equip_item_struct
 {
