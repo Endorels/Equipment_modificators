@@ -17,7 +17,7 @@ std::vector<std::shared_ptr<Modificator>> get_modificators(const std::string &pa
 
 // ----------------------------------------- //
 
-int main()
+int main(int argc, char* argv[])
 {
     // -- get modificators from file
     std::vector<std::shared_ptr<Modificator>> mods_(get_modificators("C:\\C++\\Inventory\\resourses\\modificators.txt"));
